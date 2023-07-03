@@ -68,7 +68,7 @@ function clickOperate() {
 function display() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
-    if(num1 != '' && operator != '' && logBox.textContent != '') {
+    if(num1 != '' && operator != '' && logBox.textContent != ' ') { /* &nbsp; */
         logBox.textContent = `Ans = ${num1}`
     }
     displayBox.textContent = `${num1} ${operator} ${num2}`;
@@ -86,7 +86,7 @@ function clear() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
     displayBox.textContent = '0';
-    logBox.textContent = '';
+    logBox.textContent = ' ';
 
     console.log("Cleared");
 }
@@ -108,7 +108,11 @@ function resetForNextCalculation() {
 
 // operate function
 function operate() {
-    if(num1 === '' || num2 === '' || operator === '') return;
+    // if any of the inputs are empty, alert an error
+    if(num1 === '' || num2 === '' || operator === '') {
+        alert("ERR: INVALID FORMAT USED");
+        return;
+    };
 
     let parsedNum1 = parseInt(num1);
     let parsedNum2 = parseInt(num2);
@@ -124,8 +128,18 @@ function operate() {
         answer = divide(parsedNum1, parsedNum2);
     }
 
+    // if the answer is a decimal, round it
+    if (answer % 1 != 0) {
+        answer = roundDecimals(answer);
+    }
+
     resetForNextCalculation();
     display();
+}
+
+// round decimals and parses them as a float (strips 0's)
+function roundDecimals(num) {
+    return parseFloat((num).toFixed(10));
 }
 
 // math functions
@@ -142,8 +156,10 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    // if dividing by zero, alert an error
     if(b === 0) {
-        return "ERROR";
+        alert("ERR: DIVIDE BY ZERO");
+        return '';
     }
     return a / b;
 }

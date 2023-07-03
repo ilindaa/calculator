@@ -29,7 +29,7 @@ footer {
     flex: 1;
 }
 
-/* row for display and rows (numbers, operators) */
+/* spacing - row for display and rows (numbers, operators) */
 .row-display,
 .row {
     gap: 16px;
@@ -38,7 +38,7 @@ footer {
 /* changed the color of the font for most of the buttons and the container */
 .container,
 button {
-    color: #ededed;
+    color: #fffeff;
     font-size: 25px;
 }
 
@@ -65,22 +65,22 @@ button {
 .row-display {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    flex-wrap: wrap;
     word-break: break-all; /* text breaks onto the next line */
-    margin-top: 100px;
+    border-radius: 5px;
+    padding: 20px;
 }
 
 /* flexes the log and display so they are stacked vertically on one another */
 .stack {
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
 }
 
 /* CSS FOR LOG AND DISPLAY */
 .log {
     font-size: 20px;
-    opacity: 50%;
+    opacity: 55%;
 }
 
 .display {
@@ -102,7 +102,6 @@ button {
 
 /* CSS FOR THE BUTTONS (NUMBERS, OPERATORS) */
 button {
-    background-color: #161616;
     height: 60px;
     width: 60px;
     border: none;
@@ -120,19 +119,25 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 15px;
 }
 
 /* COLORS */
+button, 
+.row-display {
+    background-color: #161616;
+}
+
 .all-clear,
 .delete {
-    color: #df7d44;
+    color: #6fccdd;
 }
 
 .percent,
 .operators {
-    color: #3d9fd7;
+    color: #fa7c2e;
 }
 
 .equals {
-    background-color: #074c85;
+    background-color: #f16533;
 }
