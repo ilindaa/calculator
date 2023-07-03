@@ -67,6 +67,10 @@ function clickOperate() {
 // updates the display
 function display() {
     const displayBox = document.querySelector('.display');
+    const logBox = document.querySelector('.log');
+    if(num1 != '' && operator != '' && logBox.textContent != '') {
+        logBox.textContent = `Ans = ${num1}`
+    }
     displayBox.textContent = `${num1} ${operator} ${num2}`;
     console.log("Displayed");
 }
