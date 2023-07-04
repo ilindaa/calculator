@@ -2,13 +2,17 @@ let num1 = '';
 let num2 = '';
 let answer = '';
 let operator = '';
-let executeSaveOperator = false;
 
 // runs the event listeners
 function run() {
     saveNum();
+    saveOperator();
     clickOperate();
     clickAllClear();
+    clickPercent();
+    clickNegate();
+    clickDecimal();
+    clickBack();
 }
 
 /* EVENT LISTENERS */
@@ -23,29 +27,21 @@ function saveNum() {
             } else {
                 num2 += elem.value;
             }
-
-            // run the event listener only once (after the user enters a number)
-            if(executeSaveOperator === false) {
-                saveOperator();
-                executeSaveOperator = true;
-            }
-
             display();
         });
     });
 }
 
 // saves the operator for each calculation
+// saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
 function saveOperator() {
-    if (num1 === '') {
-        return;
-    }
-
     const operators = document.querySelectorAll('.operators');
     operators.forEach(function(elem) {
         elem.addEventListener('click', function() {
-            operator = elem.value;
-            display();
+            if(num1 != '' && num2 == '') {
+                operator = elem.value;
+                display();
+            }
         })
     });
 }
@@ -62,6 +58,30 @@ function clickOperate() {
     equals.addEventListener('click', operate);
 }
 
+// adds an event listener to percent (turns the number into a decimal)
+function clickPercent() {
+    const perc = document.querySelector('.percent');
+    perc.addEventListener('click', percent);
+}
+
+// adds an event listener to negate (turns the number to negative/positive)
+function clickNegate() {
+    const neg = document.querySelector('.negate');
+    neg.addEventListener('click', negate);
+}
+
+// adds an event listener to decimal "." (turn into a proper float)
+function clickDecimal() {
+    const dec = document.querySelector('.decimal');
+    dec.addEventListener('click', decimal);
+}
+
+// adds an event listener to the backspace button
+function clickBack() {
+    const back = document.querySelector('.backspace');
+    back.addEventListener('click', backspace);
+}
+
 /* DISPLAY AND CLEAR */
 
 // updates the display
@@ -71,8 +91,14 @@ function display() {
     if(num1 != '' && operator != '' && logBox.textContent != ' ') { /* &nbsp; */
         logBox.textContent = `Ans = ${num1}`
     }
-    displayBox.textContent = `${num1} ${operator} ${num2}`;
-    console.log("Displayed");
+
+    // if-statement prevents the display box from being '' (empty)
+    if(num1 == '') {
+        displayBox.textContent = '0';
+    } else {
+        displayBox.textContent = `${num1} ${operator} ${num2}`;
+        console.log("Displayed");
+    }
 }
 
 // clears everything including the display
@@ -81,7 +107,6 @@ function clear() {
     num2 = '';
     answer = '';
     operator = '';
-    executeSaveOperator = false;
 
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
@@ -108,14 +133,14 @@ function resetForNextCalculation() {
 
 // operate function
 function operate() {
-    // if any of the inputs are empty, alert an error
-    if(num1 === '' || num2 === '' || operator === '') {
+    // don't operate num1, operator, or num2 is empty
+    if(num1 == '' || operator == '' || num2 == '') {
         alert("ERR: INVALID FORMAT USED");
         return;
-    };
+    }
 
-    let parsedNum1 = parseInt(num1);
-    let parsedNum2 = parseInt(num2);
+    let parsedNum1 = parseFloat(num1);
+    let parsedNum2 = parseFloat(num2);
 
     console.log(`Operated ${parsedNum1}, ${operator}, ${parsedNum2}`);
     if(operator === '+') {
@@ -162,6 +187,52 @@ function divide(a, b) {
         return '';
     }
     return a / b;
+}
+
+// for percent, negate, decimal: 
+// num1: num1 can't be empty and operator must be empty
+// num2: num1 can't be empty (skip check b/c saveOperator() behavior) and operator can't be empty and num2 can't be empty
+function percent() {
+    if(num1 != '' && operator == '') {
+        num1 = num1 / 100;
+    }
+    if(operator != '' && num2 != '') {
+        num2 = num2 / 100;
+    }
+    console.log("Percent");
+    display();
+}
+
+function negate() {
+    if(num1 != '' && operator == '') {
+        num1 = -num1;
+    }
+    if(operator != '' && num2 != '') {
+        num2 = -num2;
+    }
+    console.log("Negate");
+    display();
+}
+
+// add a . (only works once)
+// turns the number into a string (may be an int if it was saved in ans) and checks if there is a '.'
+function decimal() {
+    if(num1 != '' && operator == '') {
+        if(!num1.toString().includes('.')) {
+            num1 += ".";
+        }
+    }
+    if(operator != '' && num2 != '') {
+        if(!num2.toString().includes('.')) {
+            num2 += ".";
+        }
+    }
+    console.log("Decimal");
+    display();
+}
+
+function backspace() {
+    console.log("test");
 }
 
 // runs this when page loads
