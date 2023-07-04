@@ -2,6 +2,8 @@ let num1 = '';
 let num2 = '';
 let answer = '';
 let operator = '';
+// this is the initial value when no numbers are pressed
+let defaultDisplayValue = ' ';
 
 // runs the event listeners
 function run() {
@@ -94,10 +96,9 @@ function display() {
 
     // if-statement prevents the display box from being '' (empty)
     if(num1 == '') {
-        displayBox.textContent = '0';
+        displayBox.textContent = defaultDisplayValue;
     } else {
         displayBox.textContent = `${num1} ${operator} ${num2}`;
-        console.log("Displayed");
     }
 }
 
@@ -110,10 +111,8 @@ function clear() {
 
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
-    displayBox.textContent = '0';
+    displayBox.textContent = defaultDisplayValue;
     logBox.textContent = ' ';
-
-    console.log("Cleared");
 }
 
 // resets for the next calculation after operate runs
@@ -142,7 +141,7 @@ function operate() {
     let parsedNum1 = parseFloat(num1);
     let parsedNum2 = parseFloat(num2);
 
-    console.log(`Operated ${parsedNum1}, ${operator}, ${parsedNum2}`);
+    // console.log(`Operated ${parsedNum1}, ${operator}, ${parsedNum2}`);
     if(operator === '+') {
         answer = add(parsedNum1, parsedNum2);
     } else if (operator === '-') {
@@ -199,7 +198,6 @@ function percent() {
     if(operator != '' && num2 != '') {
         num2 = num2 / 100;
     }
-    console.log("Percent");
     display();
 }
 
@@ -210,7 +208,6 @@ function negate() {
     if(operator != '' && num2 != '') {
         num2 = -num2;
     }
-    console.log("Negate");
     display();
 }
 
@@ -227,12 +224,19 @@ function decimal() {
             num2 += ".";
         }
     }
-    console.log("Decimal");
     display();
 }
 
+// check which one you are on and then slice the last one from that and save it back
 function backspace() {
-    console.log("test");
+    if(num1 != '' && operator == '') {
+        num1 = num1.toString().slice(0, -1);
+    } else if(operator != '' && num2 == '') {
+        operator = operator.toString().slice(0, -1);
+    } else if(num2 != '') {
+        num2 = num2.toString().slice(0, -1);
+    }
+    display();
 }
 
 // runs this when page loads
