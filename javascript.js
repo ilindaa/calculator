@@ -7,8 +7,8 @@ let defaultDisplayValue = ' ';
 
 // runs the event listeners
 function run() {
-    saveNum();
-    saveOperator();
+    clickNum();
+    clickOperator();
     clickOperate();
     clickAllClear();
     clickPercent();
@@ -19,33 +19,39 @@ function run() {
 
 /* EVENT LISTENERS */
 
-// saves the number for each calculation
-function saveNum() {
+// adds an event listener to numbers
+function clickNum() {
     const numbers = document.querySelectorAll('.numbers');
     numbers.forEach(function(elem) {
-        elem.addEventListener('click', function() {
-            if (operator === '') {
-                num1 += elem.value;
-            } else {
-                num2 += elem.value;
-            }
-            display();
-        });
+        elem.addEventListener('click', saveNum);
+    });
+}
+
+// saves the number for each calculation
+function saveNum() {
+    if (operator === '') {
+        num1 += this.value;
+    } else {
+        num2 += this.value;
+    }
+    display(); 
+}
+
+// adds an event listener to operator 
+function clickOperator() {
+    const operators = document.querySelectorAll('.operators');
+    operators.forEach(function(elem) {
+        elem.addEventListener('click', saveOperator);
     });
 }
 
 // saves the operator for each calculation
 // saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
 function saveOperator() {
-    const operators = document.querySelectorAll('.operators');
-    operators.forEach(function(elem) {
-        elem.addEventListener('click', function() {
-            if(num1 != '' && num2 == '') {
-                operator = elem.value;
-                display();
-            }
-        })
-    });
+    if (num1 !== '' && num2 === '') {
+        operator = this.value;
+        display();
+    }
 }
 
 // adds an event listener to AC (all clear)
@@ -90,12 +96,12 @@ function clickBack() {
 function display() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
-    if(num1 != '' && operator != '' && logBox.textContent != ' ') { /* &nbsp; */
+    if (num1 !== '' && operator !== '' && logBox.textContent !== ' ') { /* &nbsp; */
         logBox.textContent = `Ans = ${num1}`
     }
 
     // if-statement prevents the display box from being '' (empty)
-    if(num1 == '') {
+    if (num1 === '') {
         displayBox.textContent = defaultDisplayValue;
     } else {
         displayBox.textContent = `${num1} ${operator} ${num2}`;
@@ -104,15 +110,17 @@ function display() {
 
 // clears everything including the display
 function clear() {
-    num1 = '';
-    num2 = '';
-    answer = '';
-    operator = '';
-
-    const displayBox = document.querySelector('.display');
-    const logBox = document.querySelector('.log');
-    displayBox.textContent = defaultDisplayValue;
-    logBox.textContent = ' ';
+    if(confirm("Are you sure you want to clear the calculator?\nThis action cannot be undone.")) {
+        num1 = '';
+        num2 = '';
+        answer = '';
+        operator = '';
+    
+        const displayBox = document.querySelector('.display');
+        const logBox = document.querySelector('.log');
+        displayBox.textContent = defaultDisplayValue;
+        logBox.textContent = ' ';
+    }
 }
 
 // resets for the next calculation after operate runs
@@ -133,7 +141,7 @@ function resetForNextCalculation() {
 // operate function
 function operate() {
     // don't operate num1, operator, or num2 is empty
-    if(num1 == '' || operator == '' || num2 == '') {
+    if (num1 === '' || operator === '' || num2 === '') {
         alert("ERR: INVALID FORMAT USED");
         return;
     }
@@ -142,7 +150,7 @@ function operate() {
     let parsedNum2 = parseFloat(num2);
 
     // console.log(`Operated ${parsedNum1}, ${operator}, ${parsedNum2}`);
-    if(operator === '+') {
+    if (operator === '+') {
         answer = add(parsedNum1, parsedNum2);
     } else if (operator === '-') {
         answer = subtract(parsedNum1, parsedNum2);
@@ -153,7 +161,7 @@ function operate() {
     }
 
     // if the answer is a decimal, round it
-    if (answer % 1 != 0) {
+    if (answer % 1 !== 0) {
         answer = roundDecimals(answer);
     }
 
@@ -181,7 +189,7 @@ function multiply(a, b) {
 
 function divide(a, b) {
     // if dividing by zero, alert an error
-    if(b === 0) {
+    if (b === 0) {
         alert("ERR: DIVIDE BY ZERO");
         return '';
     }
@@ -192,20 +200,20 @@ function divide(a, b) {
 // num1: num1 can't be empty and operator must be empty
 // num2: num1 can't be empty (skip check b/c saveOperator() behavior) and operator can't be empty and num2 can't be empty
 function percent() {
-    if(num1 != '' && operator == '') {
+    if (num1 !== '' && operator === '') {
         num1 = num1 / 100;
     }
-    if(operator != '' && num2 != '') {
+    if (operator !== '' && num2 !== '') {
         num2 = num2 / 100;
     }
     display();
 }
 
 function negate() {
-    if(num1 != '' && operator == '') {
+    if (num1 !== '' && operator === '') {
         num1 = -num1;
     }
-    if(operator != '' && num2 != '') {
+    if (operator !== '' && num2 !== '') {
         num2 = -num2;
     }
     display();
@@ -214,13 +222,13 @@ function negate() {
 // add a . (only works once)
 // turns the number into a string (may be an int if it was saved in ans) and checks if there is a '.'
 function decimal() {
-    if(num1 != '' && operator == '') {
-        if(!num1.toString().includes('.')) {
+    if (num1 !== '' && operator === '') {
+        if (!num1.toString().includes('.')) {
             num1 += ".";
         }
     }
-    if(operator != '' && num2 != '') {
-        if(!num2.toString().includes('.')) {
+    if (operator !== '' && num2 !== '') {
+        if (!num2.toString().includes('.')) {
             num2 += ".";
         }
     }
@@ -229,11 +237,11 @@ function decimal() {
 
 // check which one you are on and then slice the last one from that and save it back
 function backspace() {
-    if(num1 != '' && operator == '') {
+    if (num1 !== '' && operator === '') {
         num1 = num1.toString().slice(0, -1);
-    } else if(operator != '' && num2 == '') {
+    } else if (operator !== '' && num2 === '') {
         operator = operator.toString().slice(0, -1);
-    } else if(num2 != '') {
+    } else if (num2 !== '') {
         num2 = num2.toString().slice(0, -1);
     }
     display();
@@ -241,3 +249,63 @@ function backspace() {
 
 // runs this when page loads
 run();
+
+// keyboard support
+window.addEventListener(
+    "keydown", 
+    (event) => {
+        if (event.defaultPrevented) {
+            return;
+        }
+
+        switch(event.key) {
+            case "0":
+            case "1": 
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+            case "6":
+            case "7":
+            case "8":
+            case "9":
+                if (operator === '') {
+                    num1 += event.key;
+                } else {
+                    num2 += event.key;
+                }
+                display(); 
+                break;
+            case "/":
+            case "*":
+            case "-":
+            case "+":
+                if (num1 !== '' && num2 === '') {
+                    operator = event.key;
+                    display();
+                }
+                break;
+            case "%":
+                percent(); // %
+                break;
+            case ".":
+                decimal(); // .
+                break;
+            case "Backspace": // ←
+                backspace();
+                break;
+            case "n": // +/-
+                negate();
+                break;
+            case "a": // AC
+            case "c":
+                clear();
+                break;
+            case "Enter": // =
+            case "=":
+                operate();
+                break;
+        }
+        
+    }
+)
