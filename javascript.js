@@ -3,7 +3,7 @@ let num2 = '';
 let answer = '';
 let operator = '';
 // This is the initial value when no numbers are pressed
-let defaultDisplayValue = ' ';
+let defaultDisplayValue = ' '; /* &nbsp; */
 
 // Runs the event listeners
 function run() {
@@ -27,15 +27,15 @@ function clickNum() {
     });
 }
 
-// Saves the number for each calculation
-function saveNum() {
-    if (operator === '') {
-        num1 += this.value;
-    } else {
-        num2 += this.value;
+    // Saves the number for each calculation
+    function saveNum() {
+        if (operator === '') {
+            num1 += this.value;
+        } else {
+            num2 += this.value;
+        }
+        display(); 
     }
-    display(); 
-}
 
 // Adds an event listener to operator 
 function clickOperator() {
@@ -45,14 +45,14 @@ function clickOperator() {
     });
 }
 
-// Saves the operator for each calculation
-// saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
-function saveOperator() {
-    if (num1 !== '' && num2 === '') {
-        operator = this.value;
-        display();
+    // Saves the operator for each calculation
+    // saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
+    function saveOperator() {
+        if (num1 !== '' && num2 === '') {
+            operator = this.value;
+            display();
+        }
     }
-}
 
 // Adds an event listener to AC (all clear)
 function clickAllClear() {
@@ -96,7 +96,7 @@ function clickBack() {
 function display() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
-    if (num1 !== '' && operator !== '' && logBox.textContent !== ' ') { /* &nbsp; */
+    if (num1 !== '' && operator !== '' && logBox.textContent !== ' ') {
         logBox.textContent = `Ans = ${num1}`
     }
 
@@ -328,6 +328,5 @@ window.addEventListener(
                 alert("Keyboard Support Help Menu\nNote: Numbers, operators, decimal, and backspace are self-explanatory.\n\n(Button: Keyboard Key)\n\nAC (All Clear): A, C\n+/- (Negation): N\n= (Equals): Enter, =");
                 break;
         }
-        
     }
 )
