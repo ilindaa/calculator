@@ -2,10 +2,10 @@ let num1 = '';
 let num2 = '';
 let answer = '';
 let operator = '';
-// this is the initial value when no numbers are pressed
+// This is the initial value when no numbers are pressed
 let defaultDisplayValue = ' ';
 
-// runs the event listeners
+// Runs the event listeners
 function run() {
     clickNum();
     clickOperator();
@@ -19,7 +19,7 @@ function run() {
 
 /* EVENT LISTENERS */
 
-// adds an event listener to numbers
+// Adds an event listener to numbers
 function clickNum() {
     const numbers = document.querySelectorAll('.numbers');
     numbers.forEach(function(elem) {
@@ -27,7 +27,7 @@ function clickNum() {
     });
 }
 
-// saves the number for each calculation
+// Saves the number for each calculation
 function saveNum() {
     if (operator === '') {
         num1 += this.value;
@@ -37,7 +37,7 @@ function saveNum() {
     display(); 
 }
 
-// adds an event listener to operator 
+// Adds an event listener to operator 
 function clickOperator() {
     const operators = document.querySelectorAll('.operators');
     operators.forEach(function(elem) {
@@ -45,7 +45,7 @@ function clickOperator() {
     });
 }
 
-// saves the operator for each calculation
+// Saves the operator for each calculation
 // saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
 function saveOperator() {
     if (num1 !== '' && num2 === '') {
@@ -54,37 +54,37 @@ function saveOperator() {
     }
 }
 
-// adds an event listener to AC (all clear)
+// Adds an event listener to AC (all clear)
 function clickAllClear() {
     const ac = document.querySelector('.all-clear');
     ac.addEventListener('click', clear);
 }
 
-// adds an event listener to equals
+// Adds an event listener to equals
 function clickOperate() {
     const equals = document.querySelector('.equals');
     equals.addEventListener('click', operate);
 }
 
-// adds an event listener to percent (turns the number into a decimal)
+// Adds an event listener to percent (turns the number into a decimal)
 function clickPercent() {
     const perc = document.querySelector('.percent');
     perc.addEventListener('click', percent);
 }
 
-// adds an event listener to negate (turns the number to negative/positive)
+// Adds an event listener to negate (turns the number to negative/positive)
 function clickNegate() {
     const neg = document.querySelector('.negate');
     neg.addEventListener('click', negate);
 }
 
-// adds an event listener to decimal "." (turn into a proper float)
+// Adds an event listener to decimal "." (turn into a proper float)
 function clickDecimal() {
     const dec = document.querySelector('.decimal');
     dec.addEventListener('click', decimal);
 }
 
-// adds an event listener to the backspace button
+// Adds an event listener to the backspace button
 function clickBack() {
     const back = document.querySelector('.backspace');
     back.addEventListener('click', backspace);
@@ -92,7 +92,7 @@ function clickBack() {
 
 /* DISPLAY AND CLEAR */
 
-// updates the display
+// Updates the display
 function display() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
@@ -108,7 +108,7 @@ function display() {
     }
 }
 
-// clears everything including the display
+// Clears everything including the display
 function clear() {
     if(confirm("Are you sure you want to clear the calculator?\nThis action cannot be undone.")) {
         num1 = '';
@@ -123,8 +123,8 @@ function clear() {
     }
 }
 
-// resets for the next calculation after operate runs
-// updates the log to be the previous calculation
+// Resets for the next calculation after operate runs
+// Updates the log to be the previous calculation
 function resetForNextCalculation() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
@@ -138,9 +138,9 @@ function resetForNextCalculation() {
 
 /* OPERATIONS */
 
-// operate function
+// Operate function
 function operate() {
-    // don't operate num1, operator, or num2 is empty
+    // Don't operate num1, operator, or num2 is empty
     if (num1 === '' || operator === '' || num2 === '') {
         alert("ERR: INVALID FORMAT USED");
         return;
@@ -160,7 +160,7 @@ function operate() {
         answer = divide(parsedNum1, parsedNum2);
     }
 
-    // if the answer is a decimal, round it
+    // If the answer is a decimal, round it
     if (answer % 1 !== 0) {
         answer = roundDecimals(answer);
     }
@@ -169,12 +169,12 @@ function operate() {
     display();
 }
 
-// round decimals and parses them as a float (strips 0's)
+// Round decimals and parses them as a float (strips 0's)
 function roundDecimals(num) {
     return parseFloat((num).toFixed(10));
 }
 
-// math functions
+// Math functions
 function add(a, b) {
     return a + b;
 }
@@ -188,7 +188,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
-    // if dividing by zero, alert an error
+    // If dividing by zero, alert an error
     if (b === 0) {
         alert("ERR: DIVIDE BY ZERO");
         return '';
@@ -196,7 +196,7 @@ function divide(a, b) {
     return a / b;
 }
 
-// for percent, negate, decimal: 
+// For percent, negate, decimal: 
 // num1: num1 can't be empty and operator must be empty
 // num2: num1 can't be empty (skip check b/c saveOperator() behavior) and operator can't be empty and num2 can't be empty
 function percent() {
@@ -219,8 +219,8 @@ function negate() {
     display();
 }
 
-// add a . (only works once)
-// turns the number into a string (may be an int if it was saved in ans) and checks if there is a '.'
+// Add a . (only works once)
+// Turns the number into a string (may be an int if it was saved in ans) and checks if there is a '.'
 function decimal() {
     if (num1 !== '' && operator === '') {
         if (!num1.toString().includes('.')) {
@@ -235,7 +235,7 @@ function decimal() {
     display();
 }
 
-// check which one you are on and then slice the last one from that and save it back
+// Check which one you are on and then slice the last one from that and save it back
 function backspace() {
     if (num1 !== '' && operator === '') {
         num1 = num1.toString().slice(0, -1);
@@ -247,16 +247,35 @@ function backspace() {
     display();
 }
 
-// runs this when page loads
+// Runs this when page loads
 run();
 
-// keyboard support
+// Keyboard support
 window.addEventListener(
     "keydown", 
     (event) => {
-        if (event.defaultPrevented) {
-            return;
+        if (event.defaultPrevented) return;
+
+        let buttonPressed = document.querySelector(`button[value="${event.key}"]`);
+
+        // Set the buttonPressed for all clear and equals buttons (they have two keys assigned to them)
+        if (event.key === "a" || event.key === "c") {
+            buttonPressed = document.querySelector('button[class="all-clear"]');
         }
+        if (event.key === "Enter" || event.key === "=") {
+            buttonPressed = document.querySelector('button[class="equals"]');
+        }
+
+        // If there is a button, then add a class that shows the button has been pressed
+        if (buttonPressed) {
+            buttonPressed.classList.add('button-pressed');
+            // Remove the button-pressed class after a split second
+            const time = 200;
+            setTimeout(function() { buttonPressed.classList.remove('button-pressed') }, time);
+        }
+
+        // If there is no button and the user isn't asking for help, there's no need to go through the switch statement
+        if (!buttonPressed && event.key != "h") return;
 
         switch(event.key) {
             case "0":
@@ -304,6 +323,9 @@ window.addEventListener(
             case "Enter": // =
             case "=":
                 operate();
+                break;
+            case "h":
+                alert("Keyboard Support Help Menu\nNote: Numbers, operators, decimal, and backspace are self-explanatory.\n\n(Button: Keyboard Key)\n\nAC (All Clear): A, C\n+/- (Negation): N\n= (Equals): Enter, =");
                 break;
         }
         
