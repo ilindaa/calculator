@@ -17,36 +17,80 @@
                     <div class="display">&nbsp;</div>
                 </div>
             </div>
+            <!-- Wrapped the button text in a div to shrink the button content (svg, text) without shrinking the button itself -->
             <div class="num-pad">
                 <div class="row">
-                    <button class="all-clear" value="allClear">AC</button> <!-- a, c -->
-                    <button class="backspace" value="Backspace">←</button>
-                    <button class="percent" value="%">%</button>
-                    <button class="operators" value="/">/</button>
+                    <button class="all-clear" value="allClear"> <!-- a, c -->
+                        <div class="button-text">AC</div>
+                    </button>
+                    <button class="backspace" value="Backspace">
+                        <!-- Backspace svg: https://fonts.google.com/icons -->
+                        <div class="button-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" height="34" viewBox="0 -960 960 960" width="34" style="transform: translate(-1px, 4px);" class="backspace-filter"><path d="M360-200q-22 0-40-11.5T289-241L120-480l169-239q13-18 31-29.5t40-11.5h420q24.75 0 42.375 17.625T840-700v440q0 24.75-17.625 42.375T780-200H360Zm420-60v-440 440Zm-431 0h431v-440H349L195-480l154 220Zm99-66 112-112 112 112 43-43-113-111 111-111-43-43-110 112-112-112-43 43 113 111-113 111 43 43Z"/></svg>
+                        </div>
+                    </button>
+                    <button class="percent" value="%">
+                        <div class="button-text">%</div>
+                    </button>
+                    <button class="operators" value="/">
+                        <div class="button-text">/</div>
+                    </button>
                 </div>
                 <div class="row">
-                    <button class="numbers" value="7">7</button>
-                    <button class="numbers" value="8">8</button>
-                    <button class="numbers" value="9">9</button>
-                    <button class="operators" value="*">*</button>
+                    <button class="numbers" value="7">
+                        <div class="button-text">7</div>
+                    </button>
+                    <button class="numbers" value="8">
+                        <div class="button-text">8</div>
+                    </button>
+                    <button class="numbers" value="9">
+                        <div class="button-text">9</div>
+                    </button>
+                    <button class="operators" value="*">
+                        <div class="button-text">*</div>
+                    </button>
                 </div>
                 <div class="row">
-                    <button class="numbers" value="4">4</button>
-                    <button class="numbers" value="5">5</button>
-                    <button class="numbers" value="6">6</button>
-                    <button class="operators" value="-">-</button>
+                    <button class="numbers" value="4">
+                        <div class="button-text">4</div>
+                    </button>
+                    <button class="numbers" value="5">
+                        <div class="button-text">5</div>
+                    </button>
+                    <button class="numbers" value="6">
+                        <div class="button-text">6</div>
+                    </button>
+                    <button class="operators" value="-">
+                        <div class="button-text">-</div>
+                    </button>
                 </div>
                 <div class="row">
-                    <button class="numbers" value="1">1</button>
-                    <button class="numbers" value="2">2</button>
-                    <button class="numbers" value="3">3</button>
-                    <button class="operators" value="+">+</button>
+                    <button class="numbers" value="1">
+                        <div class="button-text">1</div>
+                    </button>
+                    <button class="numbers" value="2">
+                        <div class="button-text">2</div>
+                    </button>
+                    <button class="numbers" value="3">
+                        <div class="button-text">3</div>
+                    </button>
+                    <button class="operators" value="+">
+                        <div class="button-text">+</div>
+                    </button>
                 </div>
                 <div class="row">
-                    <button class="negate" value="n">+/-</button>
-                    <button class="numbers" value="0">0</button>
-                    <button class="decimal" value=".">.</button>
-                    <button class="equals" value="=">=</button> <!-- Enter, = -->
+                    <button class="negate" value="n">
+                        <div class="button-text">+/-</div>
+                    </button>
+                    <button class="numbers" value="0">
+                        <div class="button-text">0</div>
+                    </button>
+                    <button class="decimal" value=".">
+                        <div class="button-text">.</div>
+                    </button>
+                    <button class="equals" value="="> <!-- Enter, = -->
+                        <div class="button-text">=</div>
+                    </button>
                 </div>
             </div>
         </div>

@@ -111,8 +111,21 @@ button {
 
 .button-pressed,
 button:active {
-    font-size: 21px;
     filter: brightness(200%);
+}
+
+button:active > .button-text,
+.button-pressed > .button-text {
+    transform: scale(0.84);
+}
+
+.operators,
+.percent,
+.negate,
+.equals,
+.all-clear,
+.decimal {
+    font-weight: bold;
 }
 
 /* Centers the calculator */
@@ -129,9 +142,12 @@ button,
     background-color: #161616;
 }
 
-.all-clear,
-.backspace {
+.all-clear {
     color: #6fccdd;
+}
+
+.backspace-filter {
+    filter: invert(97%) sepia(7%) saturate(7499%) hue-rotate(161deg) brightness(91%) contrast(89%);
 }
 
 .percent,
