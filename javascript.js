@@ -3,92 +3,33 @@ let num2 = '';
 let answer = '';
 let operator = '';
 // This is the initial value when no numbers are pressed
-let defaultDisplayValue = ' '; /* &nbsp; */
+let defaultDisplayValue = ' '; /* &nbsp; value */
 
-// Runs the event listeners
-function run() {
-    clickNum();
-    clickOperator();
-    clickOperate();
-    clickAllClear();
-    clickPercent();
-    clickNegate();
-    clickDecimal();
-    clickBack();
-}
+/* QUERY SELECTORS */
+const numbers = document.querySelectorAll('.numbers');
+const operators = document.querySelectorAll('.operators');
+const ac = document.querySelector('.all-clear');
+const equals = document.querySelector('.equals');
+const perc = document.querySelector('.percent');
+const neg = document.querySelector('.negate');
+const dec = document.querySelector('.decimal');
+const back = document.querySelector('.backspace');
 
 /* EVENT LISTENERS */
+numbers.forEach(function(elem) {
+    elem.addEventListener('click', saveNum);
+});
 
-// Adds an event listener to numbers
-function clickNum() {
-    const numbers = document.querySelectorAll('.numbers');
-    numbers.forEach(function(elem) {
-        elem.addEventListener('click', saveNum);
-    });
-}
+operators.forEach(function(elem) {
+    elem.addEventListener('click', saveOperator);
+})
 
-    // Saves the number for each calculation
-    function saveNum() {
-        if (operator === '') {
-            num1 += this.value;
-        } else {
-            num2 += this.value;
-        }
-        display(); 
-    }
-
-// Adds an event listener to operator 
-function clickOperator() {
-    const operators = document.querySelectorAll('.operators');
-    operators.forEach(function(elem) {
-        elem.addEventListener('click', saveOperator);
-    });
-}
-
-    // Saves the operator for each calculation
-    // saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
-    function saveOperator() {
-        if (num1 !== '' && num2 === '') {
-            operator = this.value;
-            display();
-        }
-    }
-
-// Adds an event listener to AC (all clear)
-function clickAllClear() {
-    const ac = document.querySelector('.all-clear');
-    ac.addEventListener('click', clear);
-}
-
-// Adds an event listener to equals
-function clickOperate() {
-    const equals = document.querySelector('.equals');
-    equals.addEventListener('click', operate);
-}
-
-// Adds an event listener to percent (turns the number into a decimal)
-function clickPercent() {
-    const perc = document.querySelector('.percent');
-    perc.addEventListener('click', percent);
-}
-
-// Adds an event listener to negate (turns the number to negative/positive)
-function clickNegate() {
-    const neg = document.querySelector('.negate');
-    neg.addEventListener('click', negate);
-}
-
-// Adds an event listener to decimal "." (turn into a proper float)
-function clickDecimal() {
-    const dec = document.querySelector('.decimal');
-    dec.addEventListener('click', decimal);
-}
-
-// Adds an event listener to the backspace button
-function clickBack() {
-    const back = document.querySelector('.backspace');
-    back.addEventListener('click', backspace);
-}
+ac.addEventListener('click', clear);
+equals.addEventListener('click', operate);
+perc.addEventListener('click', percent);
+neg.addEventListener('click', negate);
+dec.addEventListener('click', decimal);
+back.addEventListener('click', backspace);
 
 /* DISPLAY AND CLEAR */
 
@@ -96,7 +37,7 @@ function clickBack() {
 function display() {
     const displayBox = document.querySelector('.display');
     const logBox = document.querySelector('.log');
-    if (num1 !== '' && operator !== '' && logBox.textContent !== ' ') {
+    if (num1 !== '' && operator !== '' && logBox.textContent !== defaultDisplayValue) {
         logBox.textContent = `Ans = ${num1}`
     }
 
@@ -105,6 +46,25 @@ function display() {
         displayBox.textContent = defaultDisplayValue;
     } else {
         displayBox.textContent = `${num1} ${operator} ${num2}`;
+    }
+}
+
+// Saves the number for each calculation
+function saveNum() {
+    if (operator === '') {
+        num1 += this.value;
+    } else {
+        num2 += this.value;
+    }
+    display(); 
+}
+
+// Saves the operator for each calculation
+// saveOperator prevents adding an operator when num1 is empty and num2 is full (see negate(), percent())
+function saveOperator() {
+    if (num1 !== '' && num2 === '') {
+        operator = this.value;
+        display();
     }
 }
 
@@ -119,7 +79,7 @@ function clear() {
         const displayBox = document.querySelector('.display');
         const logBox = document.querySelector('.log');
         displayBox.textContent = defaultDisplayValue;
-        logBox.textContent = ' ';
+        logBox.textContent = defaultDisplayValue;
     }
 }
 
@@ -247,86 +207,78 @@ function backspace() {
     display();
 }
 
-// Runs this when page loads
-run();
-
 // Keyboard support
-window.addEventListener(
-    "keydown", 
-    (event) => {
-        if (event.defaultPrevented) return;
+window.addEventListener('keydown', (event) => {
+    if (event.defaultPrevented) return;
 
-        let buttonPressed = document.querySelector(`button[value="${event.key}"]`);
+    let buttonPressed = document.querySelector(`button[value="${event.key}"]`);
 
-        // Set the buttonPressed for all clear and equals buttons (they have two keys assigned to them)
-        if (event.key === "a" || event.key === "c") {
-            buttonPressed = document.querySelector('button[class="all-clear"]');
-        }
-        if (event.key === "Enter" || event.key === "=") {
-            buttonPressed = document.querySelector('button[class="equals"]');
-        }
-
-        // If there is a button, then add a class that shows the button has been pressed
-        if (buttonPressed) {
-            buttonPressed.classList.add('button-pressed');
-            // Remove the button-pressed class after a split second
-            const time = 200;
-            setTimeout(function() { buttonPressed.classList.remove('button-pressed') }, time);
-        }
-
-        // If there is no button and the user isn't asking for help, there's no need to go through the switch statement
-        if (!buttonPressed && event.key != "h") return;
-
-        switch(event.key) {
-            case "0":
-            case "1": 
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-            case "6":
-            case "7":
-            case "8":
-            case "9":
-                if (operator === '') {
-                    num1 += event.key;
-                } else {
-                    num2 += event.key;
-                }
-                display(); 
-                break;
-            case "/":
-            case "*":
-            case "-":
-            case "+":
-                if (num1 !== '' && num2 === '') {
-                    operator = event.key;
-                    display();
-                }
-                break;
-            case "%":
-                percent(); // %
-                break;
-            case ".":
-                decimal(); // .
-                break;
-            case "Backspace": // ←
-                backspace();
-                break;
-            case "n": // +/-
-                negate();
-                break;
-            case "a": // AC
-            case "c":
-                clear();
-                break;
-            case "Enter": // =
-            case "=":
-                operate();
-                break;
-            case "h":
-                alert("Keyboard Support Help Menu\nNote: Numbers, operators, decimal, and backspace are self-explanatory.\n\n(Button: Keyboard Key)\n\nAC (All Clear): A, C\n+/- (Negation): N\n= (Equals): Enter, =");
-                break;
-        }
+    // Set the buttonPressed for all clear and equals buttons (they have two keys assigned to them)
+    if (event.key === "a" || event.key === "c") {
+        buttonPressed = document.querySelector('button[class="all-clear"]');
     }
-)
+    if (event.key === "Enter" || event.key === "=") {
+        buttonPressed = document.querySelector('button[class="equals"]');
+    }
+
+    // If there is a button, then add a class that shows the button has been pressed
+    if (buttonPressed) {
+        buttonPressed.classList.add('button-pressed');
+        // Remove the button-pressed class after a split second
+        const time = 200;
+        setTimeout(function() { buttonPressed.classList.remove('button-pressed') }, time);
+    }
+
+    // If there is no button and the user isn't asking for help, there's no need to go through the rest of the if-statements
+    switch(event.key) {
+        case "0":
+        case "1": 
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+            if (operator === '') {
+                num1 += event.key;
+            } else {
+                num2 += event.key;
+            }
+            display();
+            break;
+        case "/":
+        case "*":
+        case "-":
+        case "+":
+            if (num1 !== '' && num2 === '') {
+                operator = event.key;
+                display();
+            }
+            break;
+        case "%":
+            percent(); // %
+            break;
+        case ".":
+            decimal(); // .
+            break;
+        case "Backspace": // ←
+            backspace();
+            break;
+        case "n": // +/-
+            negate();
+            break;
+        case "a": // AC
+        case "c":
+            clear();
+            break;
+        case "Enter": // =
+        case "=":
+            operate();
+            break;
+        case "h":
+            alert("Keyboard Support Help Menu\nNote: Numbers, operators, decimal, and backspace are self-explanatory.\n\n(Button: Keyboard Key)\n\nAC (All Clear): A, C\n+/- (Negation): N\n= (Equals): Enter, =");
+            break;
+    }
+});
