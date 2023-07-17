@@ -182,14 +182,18 @@ function negate() {
 // Add a . (only works once)
 // Turns the number into a string (may be an int if it was saved in ans) and checks if there is a '.'
 function decimal() {
-    if (num1 !== '' && operator === '') {
-        if (!num1.toString().includes('.')) {
-            num1 += ".";
+    if (operator === '' && !num1.toString().includes('.')) {
+        if (num1 !== '') {
+            num1 += '.';
+        } else {
+            num1 += '0.';
         }
     }
-    if (operator !== '' && num2 !== '') {
-        if (!num2.toString().includes('.')) {
-            num2 += ".";
+    if (operator !== '' && !num2.toString().includes('.')) {
+        if (num2 !== '') {
+            num2 += '.';
+        } else {
+            num2 += '0.';
         }
     }
     display();
